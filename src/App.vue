@@ -1,5 +1,7 @@
 <template>
+  <div><h1>test</h1></div>
   <Header />
+
   <main class="main-view">
     <router-view />
   </main>
