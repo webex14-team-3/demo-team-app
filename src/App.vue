@@ -1,5 +1,4 @@
 <template>
-  <div>quiz2</div>
   <Header />
   <main class="main-view">
     <router-view />

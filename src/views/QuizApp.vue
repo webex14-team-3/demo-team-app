@@ -2,12 +2,12 @@
   <h1>Vue クイズ</h1>
   <div class="app">
     <h2>Q. {{ quiz.text }}</h2>
-    <img class="quiz-image" src="quizImagePath" alt="クイズタイトル" />
+    <img class="quiz-image" v-bind:src="quizImagePath" v-bind:alt="quiz.text" />
     <div class="container">
       <button
         v-for="(choice, i) in quiz.choices"
         v-bind:key="i"
-        v-on:click="choiced(choice)"
+        v-on:click="showFeedback(choice)"
       >
         {{ choice.text }}
       </button>
@@ -21,6 +21,7 @@ export default {
   data() {
     return {
       feedback: "",
+      imagePath: "Ganymede.jpg",
       quiz: {
         text: "この星の名前はなんでしょう?",
         image: "Ganymede.jpg",
@@ -47,7 +48,7 @@ export default {
     }
   },
   methods: {
-    choiced(choice) {
+    showFeedback(choice) {
       this.feedback = choice.feedback
 
       if (choice.isCorrect) {
@@ -57,7 +58,7 @@ export default {
   },
   computed: {
     quizImagePath() {
-      return "./images/" + this.quiz.image
+      return require("./images/" + this.quiz.image)
     },
   },
 }
