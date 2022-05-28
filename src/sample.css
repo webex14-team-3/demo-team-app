@@ -1,0 +1,4 @@
+deleteMemo: function (index) {
+    this.memos.splice(index, 1)
+    console.log(this.memos)
+  },

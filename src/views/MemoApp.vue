@@ -2,15 +2,20 @@
   <body>
     <h1>Vue メモ</h1>
     <div class="memoList">
-      <div class="addFieldMemo">
+      <!-- ボタンの設定 -->
+      <div class="textMemo">
         <input type="text" v-model="inputValue" />
         <button v-on:click="addButton">追加</button>
         <button v-on:click="deleteAllButton">全て消す</button>
       </div>
-      <ul class="memoListContainer">
-        {{
-          inputValue
-        }}
+      <!-- メモの設定 -->
+      <ul class="memoList">
+        <div v-for="(memo, index) in memos" :key="index">
+          <div class="content">
+            {{ memo.text }}
+          </div>
+          <button v-on:click="deleteMemo(index)">削除</button>
+        </div>
       </ul>
     </div>
   </body>
@@ -28,12 +33,11 @@ export default {
     addButton: function () {
       if (this.inputValue !== "") {
         this.memos.push({ text: this.inputValue })
-        this.inputmemo = ""
+        this.inputValue = ""
       }
       console.log(this.memos)
     },
-
-    deleteAll: function (index) {
+    deleteAllButton: function (index) {
       this.memos.splice(0)
       console.log(`this.memos:${index.length}`)
       console.log(index)
