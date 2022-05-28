@@ -2,3 +2,13 @@ deleteMemo: function (index) {
     this.memos.splice(index, 1)
     console.log(this.memos)
   },
+
+
+  selectButton: function () {
+    for (i = 0; i < checks.length; i++) {
+      if (checks[i].checked === true) {
+        this.memos.splice(index, 1)
+        console.log(this.memos)
+      }
+    }
+  },
