@@ -5,16 +5,20 @@
       <!-- ボタンの設定 -->
       <div class="textMemo">
         <input type="text" v-model="inputValue" />
-        <button v-on:click="addButton">追加</button>
-        <button v-on:click="deleteAllButton">全て消す</button>
+        <button class="button" v-on:click="addButton">追加</button>
+        <button class="button" v-on:click="deleteAllButton">全て消す</button>
       </div>
+
       <!-- メモの設定 -->
       <ul class="memoList">
-        <div v-for="(memo, index) in memos" :key="index">
-          <div class="content">
+        <div class="memo" v-for="(memo, index) in memos" :key="index">
+          <input class="checkbox" type="checkbox" />
+          <div>
             {{ memo.text }}
+            <button class="appearButton" v-on:click="deletebutton(index)">
+              削除
+            </button>
           </div>
-          <button v-on:click="deleteMemo(index)">削除</button>
         </div>
       </ul>
     </div>
@@ -42,16 +46,16 @@ export default {
       console.log(`this.memos:${index.length}`)
       console.log(index)
     },
+    deletebutton: function (index) {
+      this.memos.splice(index, 1)
+      console.log(this.memos)
+    },
   },
 }
 </script>
 
 <style scoped>
 body {
-  text-align: center;
-}
-
-.memoList {
   padding-left: 5rem;
   padding-right: 5rem;
   display: flex;
@@ -60,9 +64,22 @@ body {
   max-width: 512px;
   margin-left: auto;
   margin-right: auto;
+  text-align: center;
 }
 
-.memoListContainer {
+.button {
+  cursor: pointer;
+  background-color: gainsboro;
+  border: solid 1px black;
+  border-radius: 3px;
+  padding: 1px 1px;
+}
+
+.button:active {
+  transform: translateY(2px);
+}
+
+.memoList {
   padding: 0;
 }
 
@@ -74,51 +91,24 @@ body {
   border-radius: 5px;
 }
 
-.memo:hover {
+.checkbox:checked {
   color: white;
   background-color: #b23b61;
 }
 
-.memoText {
+.content {
   margin-left: 2rem;
   text-align: left;
 }
 
-.memoText--done {
+.content--done {
   text-decoration-line: line-through;
 }
 
-.memoDelete {
-  margin-left: 1rem;
-  padding: 0.5rem 0.5rem;
-  border: solid 1px black;
-  border-radius: 5px;
-  background-color: white;
+.appearButton {
+  cursor: pointer;
 }
-
-.memoDelete:hover {
-  background-color: #b2ae3b;
-  border-radius: 5px;
-}
-
-.addMemoField {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.addMemoFieldInput {
-  padding: 10px;
-}
-.addMemoFieldButton {
-  padding: 0.5rem 0.5rem;
-  border: solid 1px black;
-  border-radius: 5px;
-  background-color: white;
-}
-
-.addMemoFieldButton:hover {
-  background-color: #b2ae3b;
-  border-radius: 5px;
+.appearButton:active {
+  transform: translateY(2px);
 }
 </style>
