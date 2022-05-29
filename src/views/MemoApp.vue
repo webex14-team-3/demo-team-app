@@ -1,42 +1,69 @@
 <template>
-  <h1>Vue メモ</h1>
-  <div class="memo-list">
-    <ul class="memo-list__container">
-      <li class="memo">
-        <div class="memo__checkbox">
-          <input type="checkbox" />
+  <div class="body">
+    <h1>Vue メモ</h1>
+    <div class="memoList">
+      <!-- ボタンの設定 -->
+      <div class="textMemo">
+        <input type="text" v-model="inputValue" id="checkInput" />
+        <button class="button" v-on:click="addButton">追加</button>
+        <button class="button" v-on:click="deleteAllButton">全て消す</button>
+      </div>
+
+      <!-- メモの設定 -->
+      <ul class="memoList">
+        <div class="memo" v-for="(memo, index) in memos" :key="index">
+          <div id="checkContent">
+            <input
+              id="typeCheckbox"
+              type="checkbox"
+              required="チェックしてください"
+            />
+            <label id="checkButton" for="checkFor">
+              <div class="checks">
+                {{ memo.text }}
+              </div>
+            </label>
+            <button class="appearButton" v-on:click="deletebutton(index)">
+              削除
+            </button>
+          </div>
         </div>
-        <div class="memo__text">ひき肉を300g買う</div>
-        <button class="memo__delete">削除</button>
-      </li>
-      <li class="memo">
-        <div class="memo__checkbox">
-          <input type="checkbox" />
-        </div>
-        <div class="memo__text">ホウレンソウを1束買う</div>
-        <button class="memo__delete">削除</button>
-      </li>
-      <li class="memo">
-        <div class="memo__checkbox">
-          <input type="checkbox" />
-        </div>
-        <div class="memo__text">ピーマンを2個買う</div>
-        <button class="memo__delete">削除</button>
-      </li>
-    </ul>
-    <div class="add-memo-field">
-      <input class="add-memo-field__input" type="text" />
-      <button class="add-memo-field__button">追加</button>
+      </ul>
     </div>
   </div>
 </template>
 
 <script>
-export default {}
+export default {
+  data() {
+    return {
+      inputValue: "",
+      memos: JSON.parse(localStorage.list || "[]"),
+    }
+  },
+  methods: {
+    addButton: function () {
+      if (this.inputValue !== "") {
+        this.memos.push({ text: this.inputValue })
+        this.inputValue = ""
+      }
+      console.log(this.memos)
+    },
+    deleteAllButton: function (index) {
+      this.memos.splice(0)
+      console.log(`this.memos:${index.length}`)
+      console.log(index)
+    },
+    deletebutton: function (index) {
+      this.memos.splice(index, 1)
+      console.log(this.memos)
+    },
+  },
+}
 </script>
 
 <style scoped>
-.memo-list {
+.body {
   padding-left: 5rem;
   padding-right: 5rem;
   display: flex;
@@ -45,9 +72,23 @@ export default {}
   max-width: 512px;
   margin-left: auto;
   margin-right: auto;
+  text-align: center;
+  user-select: none;
 }
 
-.memo-list__container {
+.button {
+  cursor: pointer;
+  background-color: gainsboro;
+  border: solid 1px black;
+  border-radius: 3px;
+  padding: 1px 1px;
+}
+
+.button:active {
+  transform: translateY(2px);
+}
+
+.memoList {
   padding: 0;
 }
 
@@ -59,51 +100,33 @@ export default {}
   border-radius: 5px;
 }
 
-.memo:hover {
-  color: white;
-  background-color: #b23b61;
+.typeCheckbox {
+  position: relative;
+  margin: 5px 10px;
 }
 
-.memo__text {
-  margin-left: 2rem;
-  text-align: left;
+input:checked + label {
+  color: rgb(87, 91, 109);
+  background-color: rgb(186, 203, 203);
 }
 
-.memo__text--done {
-  text-decoration-line: line-through;
-}
-
-.memo__delete {
-  margin-left: 1rem;
-  padding: 0.5rem 0.5rem;
-  border: solid 1px black;
-  border-radius: 5px;
-  background-color: white;
-}
-
-.memo__delete:hover {
-  background-color: #b2ae3b;
-  border-radius: 5px;
-}
-
-.add-memo-field {
+#checkContent {
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
 }
 
-.add-memo-field__input {
-  padding: 10px;
-}
-.add-memo-field__button {
-  padding: 0.5rem 0.5rem;
+.appearButton {
+  cursor: pointer;
+  background-color: gainsboro;
   border: solid 1px black;
-  border-radius: 5px;
-  background-color: white;
+  border-radius: 3px;
+  padding: 2px 3px;
+  font-size: 15px;
 }
-
-.add-memo-field__button:hover {
-  background-color: #b2ae3b;
-  border-radius: 5px;
+.appearButton:active {
+  transform: translateY(2px);
+}
+.checks {
+  font-size: 20px;
+  font-weight: bold;
 }
 </style>
