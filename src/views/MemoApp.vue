@@ -1,12 +1,11 @@
 <template>
-  <body>
+  <div class="body">
     <h1>Vue メモ</h1>
     <div class="memoList">
       <!-- ボタンの設定 -->
       <div class="textMemo">
         <input type="text" v-model="inputValue" id="checkInput" />
         <button class="button" v-on:click="addButton">追加</button>
-        <button class="button" v-on:click="selectButton">選択削除</button>
         <button class="button" v-on:click="deleteAllButton">全て消す</button>
       </div>
 
@@ -14,7 +13,11 @@
       <ul class="memoList">
         <div class="memo" v-for="(memo, index) in memos" :key="index">
           <div id="checkContent">
-            <input class="typeCheckbox" type="checkbox" />
+            <input
+              id="typeCheckbox"
+              type="checkbox"
+              required="チェックしてください"
+            />
             <label id="checkButton" for="checkFor">
               <div class="checks">
                 {{ memo.text }}
@@ -27,7 +30,7 @@
         </div>
       </ul>
     </div>
-  </body>
+  </div>
 </template>
 
 <script>
@@ -60,7 +63,7 @@ export default {
 </script>
 
 <style scoped>
-body {
+.body {
   padding-left: 5rem;
   padding-right: 5rem;
   display: flex;
@@ -95,6 +98,11 @@ body {
   align-items: center;
   padding: 0.5rem;
   border-radius: 5px;
+}
+
+.typeCheckbox {
+  position: relative;
+  margin: 5px 10px;
 }
 
 input:checked + label {

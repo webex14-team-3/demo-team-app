@@ -1,16 +1,33 @@
 <template>
-  <div class="test">
-    <MemoApp />
-  </div>
+  <Header />
+  <main class="main-view">
+    <router-view />
+  </main>
+  <Footer />
 </template>
 
 <script>
-import MemoApp from "@/views/MemoApp.vue"
+import Header from "@/components/Header"
+import Footer from "@/components/Footer"
 
 export default {
-  views: {
-    MemoApp,
+  components: {
+    Header,
+    Footer,
   },
-  components: { MemoApp },
 }
 </script>
+
+<style scoped>
+.main-view {
+  padding: 0 2rem;
+  width: 100%;
+}
+</style>
+
+<style>
+body {
+  color: #2c3e50;
+  overflow-x: hidden;
+}
+</style>
