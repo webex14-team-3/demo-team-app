@@ -1,4 +1,5 @@
 <template>
+  <h1>palet</h1>
   <Header />
   <main class="main-view">
     <router-view />
