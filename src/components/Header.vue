@@ -30,6 +30,12 @@
         exact-active-class="navigation__link--exact-active"
         >Vue メモ</router-link
       >
+      <router-link
+        to="/QuizzesApp"
+        class="navigation__link"
+        exact-active-class="navigation__link--exact-active"
+        >Vue メモ複数</router-link
+      >
     </nav>
   </header>
 </template>
