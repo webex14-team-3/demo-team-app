@@ -1,35 +1,32 @@
 <template>
-  <div class="body">
-    <h1>Vue メモ</h1>
-    <div class="memoList">
-      <!-- ボタンの設定 -->
-      <div class="textMemo">
-        <input type="text" v-model="inputValue" id="checkInput" />
-        <button class="button" v-on:click="addButton">追加</button>
-        <button class="button" v-on:click="deleteAllButton">全て消す</button>
+  <div class="allContainer">
+    <h1>Todoリスト</h1>
+    <div>
+      <input
+        type="text"
+        v-model="inputMemo"
+        class="addInput"
+        placeholder="買うものを書いてね"
+      />
+      <div>
+        <button class="topButton" v-on:click="addButton">アイテム追加</button>
+        <button class="topButton" v-on:click="selectButton()">選択消去</button>
+        <button class="topButton" v-on:click="allDeleteButton">全て消す</button>
       </div>
-
-      <!-- メモの設定 -->
-      <ul class="memoList">
-        <div class="memo" v-for="(memo, index) in memos" :key="index">
-          <div id="checkContent">
-            <input
-              id="typeCheckbox"
-              type="checkbox"
-              required="チェックしてください"
-            />
-            <label id="checkButton" for="checkFor">
-              <div class="checks">
-                {{ memo.text }}
-              </div>
-            </label>
-            <button class="appearButton" v-on:click="deletebutton(index)">
-              削除
-            </button>
-          </div>
-        </div>
-      </ul>
     </div>
+    <ul>
+      <li class="memo" v-for="(item, index) in items" :key="index">
+        <label class="memoContent">
+          <input type="checkbox" v-model="item.done" class="checkboxed" />
+          <span v-bind:class="{ done: item.done }" class="message">
+            {{ item.text }}
+          </span>
+          <button v-on:click="deleteButton(index)" class="deleteButton">
+            削除
+          </button>
+        </label>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -37,96 +34,138 @@
 export default {
   data() {
     return {
-      inputValue: "",
-      memos: JSON.parse(localStorage.list || "[]"),
+      inputMemo: "",
+      items: [],
     }
   },
+  created() {
+    this.items = JSON.parse(localStorage["items"] || "[]")
+  },
   methods: {
-    addButton: function () {
-      if (this.inputValue !== "") {
-        this.memos.push({ text: this.inputValue })
-        this.inputValue = ""
+    addButton() {
+      if (this.inputMemo !== "") {
+        this.items.push({ text: this.inputMemo })
+        localStorage.setItem("items", JSON.stringify(this.items))
+        this.inputMemo = ""
       }
-      console.log(this.memos)
     },
-    deleteAllButton: function (index) {
-      this.memos.splice(0)
-      console.log(`this.memos:${index.length}`)
-      console.log(index)
+    selectButton() {
+      if (window.confirm("本当に削除しますか？")) {
+        let remains = []
+        for (let i = 0; i < this.items.length; i++) {
+          if (!this.items[i].done) {
+            remains.push(this.items[i])
+          }
+        }
+        this.items = remains
+        localStorage.setItem("items", JSON.stringify(this.items))
+      }
     },
-    deletebutton: function (index) {
-      this.memos.splice(index, 1)
-      console.log(this.memos)
+    allDeleteButton() {
+      if (window.confirm("本当に削除しますか？")) {
+        this.items = []
+        localStorage.clear()
+      }
+    },
+    deleteButton(index) {
+      if (window.confirm("本当に削除しますか？")) {
+        this.items.splice(index, 1)
+        localStorage.setItem("items", JSON.stringify(this.items))
+      }
     },
   },
+  computed: {},
 }
 </script>
 
 <style scoped>
-.body {
-  padding-left: 5rem;
-  padding-right: 5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  max-width: 512px;
-  margin-left: auto;
-  margin-right: auto;
+.allContainer {
+  padding: 0px;
+  margin: 0px;
   text-align: center;
+}
+
+.addInput {
+  min-width: 75%;
+  margin: 5px auto;
   user-select: none;
 }
 
-.button {
+.topButton {
+  margin: 0 5px;
+  max-width: 45%;
+  background-color: pink;
+  border: 1px solid orange;
+  border-radius: 5px;
+  font-size: 20px;
+  font-weight: bold;
+  user-select: none;
+}
+
+button:hover {
   cursor: pointer;
-  background-color: gainsboro;
-  border: solid 1px black;
-  border-radius: 3px;
-  padding: 1px 1px;
+  filter: brightness(102%);
 }
 
-.button:active {
-  transform: translateY(2px);
+button:active {
+  transform: scale(0.98);
 }
 
-.memoList {
-  padding: 0;
+ul {
+  list-style-type: none;
+  border: 2px solid black;
+  min-height: 450px;
+  min-width: 80%;
+  overflow: auto;
+}
+
+.done {
+  text-decoration: line-through;
+}
+
+.message {
+  user-select: none;
 }
 
 .memo {
+  border: 2px solid black;
+  margin: 5px auto;
+  max-width: 90%;
+  min-height: 30px;
+  overflow-y: auto;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+
+input[type="checkbox"] {
+  margin: 5px;
+  margin-right: 10px;
+}
+
+.message {
+  font-size: large;
+  font-weight: bold;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+
+.deleteButton {
+  background-color: pink;
+  border: 1px solid orange;
+  border-radius: 5px;
+  font-size: 15px;
+  font-weight: bold;
+  padding: 5px;
+  height: 40px;
+  width: 50px;
+}
+
+.memoContent {
+  /* border: 2px solid blue; */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem;
-  border-radius: 5px;
-}
-
-.typeCheckbox {
-  position: relative;
-  margin: 5px 10px;
-}
-
-input:checked + label {
-  color: rgb(87, 91, 109);
-  background-color: rgb(186, 203, 203);
-}
-
-#checkContent {
-  display: flex;
-}
-
-.appearButton {
-  cursor: pointer;
-  background-color: gainsboro;
-  border: solid 1px black;
-  border-radius: 3px;
-  padding: 2px 3px;
-  font-size: 15px;
-}
-.appearButton:active {
-  transform: translateY(2px);
-}
-.checks {
-  font-size: 20px;
-  font-weight: bold;
 }
 </style>
