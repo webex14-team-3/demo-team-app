@@ -2,7 +2,7 @@
   <div class="quizApp">
     <div class="question">
       <h1>{{ quizs[quizIdx].question }}</h1>
-      <img :src="require(`@/assets/quiz/${quizs[quizIdx].fileName}`)" alt="" />
+      <!-- <img :src="require(`@/assets/quiz/${quizs[quizIdx].fileName}`)" alt="" /> -->
     </div>
     <div class="choice">
       <button
@@ -74,11 +74,13 @@ export default {
   align-items: center;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
+
 .question > img {
   height: 300px;
   width: 300px;
   object-fit: contain;
 }
+
 .choice {
   display: flex;
   height: 2em;
@@ -86,9 +88,11 @@ export default {
   padding: 1em;
   justify-content: space-around;
 }
+
 .non_visible {
   display: none;
 }
+
 .visible {
   display: block;
 }
