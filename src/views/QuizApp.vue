@@ -1,13 +1,12 @@
 <template>
-  <h1>Vue クイズ</h1>
-  <div class="app">
-    <h2>Q. {{ quiz.text }}</h2>
-    <img class="quiz-image" v-bind:src="quizImagePath" v-bind:alt="quiz.text" />
+  <div class="allContainer">
+    <h1>Q.{{ quiz.text }}</h1>
+    <img class="img" v-bind:src="quizImg" v-bind:alt="quiz.text" />
     <div class="container">
       <button
-        v-for="(choice, i) in quiz.choices"
-        v-bind:key="i"
-        v-on:click="showFeedback(choice)"
+        @click="pushButton(choice)"
+        v-for="(choice, index) in quiz.choices"
+        :key="index"
       >
         {{ choice.text }}
       </button>
@@ -20,70 +19,78 @@
 export default {
   data() {
     return {
+      name: "",
       feedback: "",
-      imagePath: "Ganymede.jpg",
-      quiz: {
-        text: "この星の名前はなんでしょう?",
-        image: "Ganymede.jpg",
-        choices: [
-          {
-            text: "ゴリアテ",
-            isCorrect: false,
-            feedback:
-              "残念！ゴリアテは、旧約聖書に登場するダビデに石で殺される巨人だよ。",
-          },
-          {
-            text: "ゼニガメ",
-            isCorrect: false,
-            feedback:
-              "残念！ゼニガメは、クサガメまたはニホンイシガメの幼体だよ。",
-          },
-          {
-            text: "ガニメデ",
-            isCorrect: true,
-            feedback: "正解！ガニメデは、木星の第三惑星だよ！",
-          },
-        ],
-      },
+      img: "@/views/images/Ganymede.jpg",
+      quiz: [
+        {
+          text: "この星の名前は何でしょう？",
+          img: "Ganymede.jpg",
+          choices: [
+            {
+              text: "ゴリアテ",
+              isCorrect: false,
+              feedback: "no",
+            },
+            {
+              text: "ゼニガメ",
+              isCorrect: false,
+              feedback: "no",
+            },
+            {
+              text: "ガニメデ",
+              isCorrect: true,
+              feedback: "yes",
+            },
+          ],
+        },
+        {
+          text: "数字は？",
+          img: "Two.jpeg",
+          choices: [
+            {
+              text: "１",
+              isCorrect: false,
+              feedback: "no",
+            },
+            {
+              text: "３",
+              isCorrect: false,
+              feedback: "no",
+            },
+            {
+              text: "２",
+              isCorrect: true,
+              feedback: "yes",
+            },
+          ],
+        },
+      ],
     }
   },
   methods: {
-    showFeedback(choice) {
+    pushButton(choice) {
       this.feedback = choice.feedback
-
       if (choice.isCorrect) {
-        //次の問題へ
+        console.log("yes")
       }
     },
   },
   computed: {
-    quizImagePath() {
-      return require("./images/" + this.quiz.image)
+    quizImg(imgInd) {
+      return require("./images/" + this.quiz[imgInd].img)
     },
   },
 }
 </script>
 
-<style>
-.app {
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-  align-items: center;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.quiz-image {
-  height: 300px;
-  width: 300px;
-  object-fit: contain;
+<style scoped>
+.allContainer {
+  text-align: center;
 }
 
 .container {
   display: flex;
-  height: 2em;
-  width: 300px;
-  padding: 1em;
-  justify-content: space-around;
+  justify-content: center;
 }
 </style>

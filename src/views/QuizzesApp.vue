@@ -1,16 +1,22 @@
 <template>
-  <div class="allContainer">
-    <h2>Q.{{ quizzes.text }}</h2>
-    <img v-bind:src="quizzes.image" />
-    <div>
-      <button
-        v-for="(choice, i) in quizzes.choices"
-        :key="i"
-        v-on:click="pushButton(choice)"
-      ></button>
+  <div class="quizApp">
+    <div class="question">
+      <h1>{{ quizs[quizIdx].question }}</h1>
+      <!-- <img :src="require(`@/assets/quiz/${quizs[quizIdx].fileName}`)" alt="" /> -->
     </div>
-    <div>{{ feedback }}</div>
-    <button v-on:click="nextButton" v-if="nextTrue">次の問題</button>
+    <div class="choice">
+      <button
+        @click="showAnswer(index)"
+        v-for="(choice, index) in quizs[quizIdx].choices"
+        :key="choice"
+      >
+        {{ choice }}
+      </button>
+    </div>
+    <div class="answer">
+      <p class="feedback">{{ feedback }}</p>
+      <button :class="nextButton" @click="nextQuiz">次の問題へ進む</button>
+    </div>
   </div>
 </template>
 
@@ -18,91 +24,76 @@
 export default {
   data() {
     return {
-      feedback: "",
-      nextTrue: false,
-      quizzes: [
+      quizIdx: 0,
+      quizs: [
         {
-          text: "この星の名前は何でしょう？",
-          image: "Ganymede.jpg",
-          choices: [
-            {
-              text: "ゴリアテ",
-              isCorrect: false,
-              feedback:
-                "残念！ゴリアテは、旧約聖書に登場するダビデに石で殺される巨人だよ。",
-            },
-            {
-              text: "ゼニガメ",
-              isCorrect: false,
-              feedback:
-                "残念！ゼニガメは、クサガメまたはニホンイシガメの幼体だよ。",
-            },
-            {
-              text: "ガニメデ",
-              isCorrect: true,
-              feedback: "正解！ガニメデは、木星の第三惑星だよ！",
-            },
-          ],
+          question: "世界で2番目に高い山は？",
+          fileName: "@/views/images/K2.webp",
+          choices: ["K2", "モンブラン山", "富士山"],
+          correctChoiceIdx: 0,
+          feedbacks: ["yes", "no", "no"],
         },
         {
-          text: "いま、何問目？",
-          image: "Two.jpeg",
-          choices: [
-            {
-              text: "１",
-              isCorrect: false,
-              feedback: "残念！ひとつ少ないよ。",
-            },
-            {
-              text: "２",
-              isCorrect: true,
-              feedback: "正解！１でも３でもないよ！",
-            },
-            {
-              text: "３",
-              isCorrect: false,
-              feedback: "残念！ひとつ多いよ。",
-            },
-          ],
-        },
-        {
-          text: "この城の名前は？",
-          image: "Maruoka.png",
-          choices: [
-            {
-              text: "丸岡城",
-              isCorrect: true,
-              feedback: "正解！どこからどうみても丸岡城だね。",
-            },
-            {
-              text: "丸亀城",
-              isCorrect: true,
-              feedback: "残念！どこからどうみても丸亀城ではないよ。",
-            },
-            {
-              text: "丸子城",
-              isCorrect: false,
-              feedback: "残念！どこからどうみても丸子城ではないよ。",
-            },
-          ],
+          question: "世界で2番目に深い湖は？",
+          fileName: "@/views/images/Baikal.jpg",
+          choices: ["バイカル湖", "タンガニーカ湖", "カスピ海"],
+          correctChoiceIdx: 1,
+          feedbacks: ["no", "yes", "no"],
         },
       ],
+      nextButton: "non_visible",
+      feedback: "",
     }
   },
   methods: {
-    pushButton(choice) {
-      this.feedback = choice.feedback
-
-      if (choice.isCorrect) {
-        console.log("hellow")
-      }
+    showAnswer(choiceIdx) {
+      this.__showFeedback(choiceIdx)
+      this.__showNextButton(
+        choiceIdx === this.quizs[this.quizIdx].correctChoiceIdx
+      )
+    },
+    __showFeedback(choiceIdx) {
+      this.feedback = this.quizs[this.quizIdx].feedbacks[choiceIdx]
+    },
+    __showNextButton(isCorrect) {
+      this.nextButton = isCorrect ? "visiable" : "non_visible"
+    },
+    nextQuiz() {
+      this.quizIdx =
+        this.quizIdx === this.quizs.length - 1 ? 0 : this.quizIdx + 1
     },
   },
 }
 </script>
 
-<style scoped>
-.allContainer {
-  text-align: center;
+<style>
+.quizApp {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.question > img {
+  height: 300px;
+  width: 300px;
+  object-fit: contain;
+}
+
+.choice {
+  display: flex;
+  height: 2em;
+  width: 300px;
+  padding: 1em;
+  justify-content: space-around;
+}
+
+.non_visible {
+  display: none;
+}
+
+.visible {
+  display: block;
 }
 </style>
