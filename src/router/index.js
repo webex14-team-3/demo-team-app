@@ -4,6 +4,7 @@ import MemoApp from "@/views/MemoApp.vue"
 import QuizApp from "@/views/QuizApp.vue"
 import PaletteApp from "@/views/PaletteApp.vue"
 import QuizzesApp from "@/views/QuizzesApp.vue"
+import QiitaApp from "@/views/QiitaApp.vue"
 
 const routes = [
   {
@@ -30,6 +31,11 @@ const routes = [
     path: "/QuizzesApp",
     name: "QuizzesApp",
     component: QuizzesApp,
+  },
+  {
+    path: "/QiitaApp",
+    name: "QiitaApp",
+    component: QiitaApp,
   },
 ]
 

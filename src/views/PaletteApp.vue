@@ -37,8 +37,7 @@ export default {
       this.green = e.offsetY
     },
     selectColor() {
-      const miniPalette = { red: this.red, green: this.green }
-      this.miniPalettes.push(miniPalette)
+      this.miniPalettes.push({ red: this.red, green: this.green })
     },
   },
 }
@@ -51,18 +50,22 @@ export default {
   flex-direction: column;
   align-items: center;
 }
+
 .palette {
   width: 255px;
   height: 255px;
 }
+
 .mini-palette {
   min-width: 60px;
   height: 60px;
 }
+
 .colors-container {
   display: flex;
   flex-wrap: wrap;
   width: 300px;
   padding-top: 8px;
+  /* background-color: rgba(106, 168, 73, 0.686); */
 }
 </style>

@@ -36,6 +36,12 @@
         exact-active-class="navigation__link--exact-active"
         >Vue メモ複数</router-link
       >
+      <router-link
+        to="/QiitaApp"
+        class="navigation__link"
+        exact-active-class="navigation__link--exact-active"
+        >Vue QiitaApp</router-link
+      >
     </nav>
   </header>
 </template>
